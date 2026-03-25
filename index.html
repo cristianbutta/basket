@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notizie del giorno - Basket</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f7f7f7;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(135deg, #0f4c81, #1e7bb5);
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2.3rem;
+    }
+    .subtitle {
+      margin: 8px 0 0;
+      font-size: 1.1rem;
+      opacity: 0.85;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 28px auto;
+      padding: 0 18px 28px;
+    }
+    .grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    article {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      transition: transform .2s, box-shadow .2s;
+    }
+    article:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.14);
+    }
+    .thumb {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      height: 180px;
+    }
+    .content {
+      padding: 16px;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin: 0 0 8px;
+    }
+    p {
+      line-height: 1.5;
+      margin: 0 0 12px;
+    }
+    a.more {
+      display: inline-block;
+      text-decoration: none;
+      color: #fff;
+      background: #1e7bb5;
+      border-radius: 4px;
+      padding: 8px 13px;
+      font-weight: 600;
+    }
+    a.more:hover {
+      background: #13588d;
+    }
+    footer {
+      text-align: center;
+      padding: 16px;
+      color: #666;
+      font-size: .95rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Basket News del Giorno</h1>
+    <p class="subtitle">Tutte le novità del mondo del basket nazionale e internazionale</p>
+  </header>
+  <main class="container">
+    <section class="grid">
+      <article>
+        <img class="thumb" src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=900&q=80" alt="Partita di basketball" />
+        <div class="content">
+          <h2>Vittoria all’ultimo secondo in campionato</h2>
+          <p>Squadra A conquista il successo in rimonta contro Squadra B grazie a una tripla decisiva a pochi secondi dalla sirena.</p>
+          <a class="more" href="https://www.gazzetta.it" target="_blank" rel="noopener">Leggi l’articolo</a>
+        </div>
+      </article>
+      <article>
+        <img class="thumb" src="https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=900&q=80" alt="Giocatore di basket" />
+        <div class="content">
+          <h2>Top 5 prestazioni del week-end</h2>
+          <p>I migliori marcatori e i protagonisti del fine settimana includono una tripla doppia e una difesa strepitosa.</p>
+          <a class="more" href="https://www.repubblica.it" target="_blank" rel="noopener">Scopri di più</a>
+        </div>
+      </article>
+      <article>
+        <img class="thumb" src="https://images.unsplash.com/photo-1549921296-3f6ef74f5f3f?auto=format&fit=crop&w=900&q=80" alt="Allenamento basket" />
+        <div class="content">
+          <h2>Novità sul mercato: i trasferimenti ufficiali</h2>
+          <p>Colpo di scena con il trasferimento di una stella verso una formazione di vertice: il mercato si infiamma.</p>
+          <a class="more" href="https://www.corriere.it" target="_blank" rel="noopener">Tutti i dettagli</a>
+        </div>
+      </article>
+      <article>
+        <img class="thumb" src="https://images.unsplash.com/photo-1534438327271-520cecce88b6?auto=format&fit=crop&w=900&q=80" alt="Pallone da basketball" />
+        <div class="content">
+          <h2>Giovani promesse: focus sui talenti emergenti</h2>
+          <p>Un giovane prospetto si mette in luce con numeri impressionanti e fa sognare i tifosi dei grandi club.</p>
+          <a class="more" href="https://www.sportmediaset.mediaset.it" target="_blank" rel="noopener">Approfondisci</a>
+        </div>
+      </article>
+    </section>
+  </main>
+  <footer>
+    &copy; 2026 Basket News Italia - Ultimo aggiornamento: oggi
+  </footer>
+</body>
+</html>
