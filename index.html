@@ -5,107 +5,200 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Notizie del giorno - Basket</title>
   <style>
+    :root {
+      --bg: #050506;
+      --panel: rgba(18, 18, 22, 0.88);
+      --orange: #ff7f00;
+      --orange-dark: #d05500;
+      --text: #f5f4f8;
+      --muted: #aaa;
+      --border: rgba(255, 127, 0, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: #f7f7f7;
-      color: #333;
+      background: radial-gradient(circle at top left, #2f1512, var(--bg) 45%);
+      color: var(--text);
+      min-height: 100vh;
     }
+
     header {
-      background: linear-gradient(135deg, #0f4c81, #1e7bb5);
+      background: linear-gradient(135deg, #331f20, #000000 75%, #ff6d00 105%);
       color: white;
-      padding: 24px;
+      padding: 30px 18px;
       text-align: center;
+      border-bottom: 1px solid var(--border);
     }
+
     h1 {
       margin: 0;
-      font-size: 2.3rem;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-shadow: 0 0 16px rgba(255, 127, 0, 0.2);
     }
+
     .subtitle {
-      margin: 8px 0 0;
-      font-size: 1.1rem;
+      margin: 10px 0 0;
+      font-size: 1.05rem;
       opacity: 0.85;
+      color: var(--muted);
     }
+
     .container {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 28px auto;
-      padding: 0 18px 28px;
+      padding: 0 18px 40px;
     }
+
     .grid {
       display: grid;
       gap: 20px;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     }
+
     article {
-      background: white;
-      border-radius: 10px;
+      background: var(--panel);
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-      transition: transform .2s, box-shadow .2s;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.55);
+      transform: translateZ(0);
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
     }
+
     article:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.14);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 45px rgba(0, 0, 0, 0.7);
+      border-color: var(--orange);
     }
+
     .thumb {
       width: 100%;
       display: block;
       object-fit: cover;
-      height: 180px;
+      height: 190px;
+      filter: saturate(1.1) contrast(1.05);
     }
+
     .content {
-      padding: 16px;
+      padding: 20px;
     }
+
     h2 {
-      font-size: 1.3rem;
-      margin: 0 0 8px;
+      font-size: 1.35rem;
+      margin: 0 0 10px;
+      color: #fff;
     }
+
     p {
       line-height: 1.5;
-      margin: 0 0 12px;
+      margin: 0 0 14px;
+      color: #ddd;
     }
+
     a.more {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       text-decoration: none;
       color: #fff;
-      background: #1e7bb5;
-      border-radius: 4px;
-      padding: 8px 13px;
-      font-weight: 600;
+      background: linear-gradient(120deg, var(--orange), var(--orange-dark));
+      border-radius: 999px;
+      padding: 9px 16px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      transition: transform .2s ease, filter .2s ease, opacity .2s ease;
     }
+
     a.more:hover {
-      background: #13588d;
+      background: linear-gradient(120deg, #ff8f35, #f36b00);
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      opacity: .93;
     }
+
     .media-section {
-      margin-top: 40px;
+      margin-top: 48px;
     }
+
     .media-section h2 {
       text-align: center;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      color: #0f4c81;
+      font-size: 2rem;
+      margin-bottom: 22px;
+      color: #ffb46f;
+      letter-spacing: 0.5px;
     }
+
     .media-grid {
       display: grid;
       gap: 20px;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     }
+
     .media-item {
-      background: white;
-      border-radius: 10px;
-      padding: 16px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      background: var(--panel);
+      border-radius: 12px;
+      padding: 18px;
+      border: 1px solid rgba(255, 127, 0, 0.25);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
       text-align: center;
     }
+
     .media-item h3 {
       margin-top: 0;
-      font-size: 1.2rem;
+      font-size: 1.275rem;
     }
+
+    .text-articles {
+      margin-top: 42px;
+      display: grid;
+      gap: 20px;
+      grid-template-columns: 1fr;
+    }
+
+    .text-articles article {
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 127, 0, 0.34);
+      background: rgba(20, 18, 23, 0.72);
+    }
+
+    .text-articles h3 {
+      margin: 0 0 12px;
+      color: #ffd09a;
+    }
+
+    .text-articles p {
+      margin: 0 0 8px;
+      color: #eee;
+    }
+
     footer {
       text-align: center;
-      padding: 16px;
-      color: #666;
+      padding: 18px;
+      color: #999;
       font-size: .95rem;
+      border-top: 1px solid rgba(255, 127, 0, 0.2);
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin-top: 16px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .media-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -169,6 +262,25 @@
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
         Il tuo browser non supporta l'elemento audio in background.
       </audio>
+    </section>
+
+    <section class="text-articles">
+      <h2>Approfondimenti e articoli scritti</h2>
+      <article>
+        <h3>La rivoluzione del basket “fast-paced”</h3>
+        <p>Negli ultimi campionati, le squadre di vertice hanno accelerato il ritmo offensivo con un cambio di marcia radicale: più transizioni, più triple e una difesa mobile.</p>
+        <p>Analizziamo i dati delle ultime 10 partite e scopriamo come la gestione dei minuti in panchina stia diventando l’arma segreta dei coach più innovativi.</p>
+      </article>
+      <article>
+        <h3>Giovani talenti: la next-gen del parquet</h3>
+        <p>Dalle giovanili ai campi senior, le nuove promesse italiane mostrano fisico e visione di gioco di livello internazionale.</p>
+        <p>Il focus su tre prospetti in rampa di lancio e sulle tecniche di allenamento che li stanno portando al top.</p>
+      </article>
+      <article>
+        <h3>Il ruolo dei social media nella costruzione di un campione</h3>
+        <p>Oggi, un atleta non basta che sia forte in campo: storytelling, contenuti digitali e relazione col pubblico sono parte della carriera.</p>
+        <p>Interviste e consigli dai professionisti su come trasformare una pagina Instagram in un asset strategico senza perdere concentrazione.</p>
+      </article>
     </section>
   </main>
   <footer>
