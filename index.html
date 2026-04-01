@@ -179,6 +179,84 @@
       color: #eee;
     }
 
+    .controls {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      display: flex;
+      gap: 10px;
+      z-index: 3;
+    }
+
+    .controls button {
+      font-weight: 700;
+      border: 1px solid rgba(255, 127, 0, 0.6);
+      background: rgba(0, 0, 0, 0.45);
+      color: #fff;
+      border-radius: 999px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .controls button:hover {
+      transform: scale(1.04);
+      background: rgba(20, 20, 20, 0.86);
+    }
+
+    .dark-mode {
+      --bg: #050506;
+      --panel: rgba(18, 18, 22, 0.88);
+      --text: #f5f4f8;
+      --muted: #aaa;
+      --border: rgba(255, 127, 0, 0.3);
+    }
+
+    .light-mode {
+      --bg: #f2ebe2;
+      --panel: rgba(255, 255, 255, 0.92);
+      --text: #1a1a1a;
+      --muted: #5e5e5e;
+      --border: rgba(255, 127, 0, 0.4);
+    }
+
+    .light-mode body {
+      background: radial-gradient(circle at top left, #ffd8a8, #fff9f0);
+      color: var(--text);
+    }
+
+    .light-mode article,
+    .light-mode .media-item,
+    .light-mode .text-articles article {
+      background: rgba(255, 255, 255, 0.92);
+      border-color: rgba(255, 127, 0, 0.5);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.14);
+    }
+
+    .light-mode h1,
+    .light-mode h2,
+    .light-mode .text-articles h3 {
+      color: #1d1d1d;
+    }
+
+    .light-mode p,
+    .light-mode .subtitle {
+      color: #444;
+    }
+
+    .enter {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+
+    article,
+    .media-item,
+    .text-articles article {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .4s ease, transform .4s ease;
+    }
+
     footer {
       text-align: center;
       padding: 18px;
@@ -204,6 +282,10 @@
 </head>
 <body>
   <header>
+    <div class="controls">
+      <button id="mute-toggle" aria-label="Disattiva audio">🔊 Muto</button>
+      <button id="theme-toggle" aria-label="Cambia tema">🌙 Theme</button>
+    </div>
     <h1>Basket News del Giorno</h1>
     <p class="subtitle">Tutte le novità del mondo del basket nazionale e internazionale</p>
   </header>
@@ -294,9 +376,14 @@
   <script>
     const openSound = document.getElementById('sound-open');
     const tapSound = document.getElementById('sound-tap');
+    const bgMusic = document.getElementById('bg-music');
+    const muteToggle = document.getElementById('mute-toggle');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    let muted = false;
 
     function tryPlay(audioEl) {
-      if (!audioEl) return;
+      if (!audioEl || muted) return;
       const playPromise = audioEl.play();
       if (playPromise !== undefined) {
         playPromise.catch(() => {
@@ -305,10 +392,55 @@
       }
     }
 
+    function setMute(state) {
+      muted = state;
+      [openSound, tapSound, bgMusic].forEach((el) => {
+        if (!el) return;
+        el.muted = state;
+        if (state) {
+          el.pause();
+        } else if (el === bgMusic) {
+          el.play().catch(() => {});
+        }
+      });
+      muteToggle.textContent = state ? '🔇 Audio off' : '🔊 Audio on';
+    }
+
+    function setTheme(theme) {
+      document.documentElement.classList.remove('dark-mode', 'light-mode');
+      document.documentElement.classList.add(`${theme}-mode`);
+      themeToggle.textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
+      localStorage.setItem('preferredTheme', theme);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('preferredTheme') || 'dark';
+      setTheme(savedTheme);
+
+      const savedMute = localStorage.getItem('muted');
+      setMute(savedMute === 'true');
+
       tryPlay(openSound);
+
+      const entries = [...document.querySelectorAll('.grid article, .media-item, .text-articles article')];
+      entries.forEach((element, index) => {
+        setTimeout(() => {
+          element.classList.add('enter');
+        }, 80 * index);
+      });
+
       document.body.addEventListener('click', () => tryPlay(tapSound));
       document.body.addEventListener('touchstart', () => tryPlay(tapSound));
+    });
+
+    muteToggle.addEventListener('click', () => {
+      setMute(!muted);
+      localStorage.setItem('muted', muted);
+    });
+
+    themeToggle.addEventListener('click', () => {
+      const current = document.documentElement.classList.contains('dark-mode') ? 'dark' : 'light';
+      setTheme(current === 'dark' ? 'light' : 'dark');
     });
   </script>
 </body>
