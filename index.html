@@ -204,6 +204,57 @@
       background: rgba(20, 20, 20, 0.86);
     }
 
+    .action-bar {
+      margin: 18px 0 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted);
+    }
+
+    .action-bar input {
+      flex: 1;
+      min-width: 220px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 127, 0, 0.6);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: var(--text);
+      outline: none;
+    }
+
+    .action-bar input::placeholder {
+      color: #ccc;
+    }
+
+    .onboarding-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      background: rgba(22, 22, 28, 0.95);
+      color: #fff;
+      border: 1px solid rgba(255, 127, 0, 0.45);
+      padding: 12px 14px;
+      border-radius: 10px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+      z-index: 1000;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      max-width: 90vw;
+    }
+
+    .onboarding-toast button {
+      border: 1px solid rgba(255, 127, 0, 0.6);
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
     .dark-mode {
       --bg: #050506;
       --panel: rgba(18, 18, 22, 0.88);
@@ -285,11 +336,16 @@
     <div class="controls">
       <button id="mute-toggle" aria-label="Disattiva audio">🔊 Muto</button>
       <button id="theme-toggle" aria-label="Cambia tema">🌙 Theme</button>
+      <button id="bg-music-toggle" aria-label="Play/Pause Musica di sottofondo">⏸️ Musica</button>
     </div>
     <h1>Basket News del Giorno</h1>
     <p class="subtitle">Tutte le novità del mondo del basket nazionale e internazionale</p>
   </header>
   <main class="container">
+    <div class="action-bar">
+      <input id="article-search" type="search" placeholder="Cerca articoli..." aria-label="Cerca articoli" />
+      <small>Filtra i contenuti in tempo reale</small>
+    </div>
     <section class="grid">
       <article>
         <img class="thumb" src="https://image.newyork.se/wp-content/uploads/2014/09/Brooklyn-Nets-Tickets.jpeg.webp" alt="Partita di basketball" />
@@ -379,6 +435,7 @@
     const bgMusic = document.getElementById('bg-music');
     const muteToggle = document.getElementById('mute-toggle');
     const themeToggle = document.getElementById('theme-toggle');
+    const bgMusicToggle = document.getElementById('bg-music-toggle');
 
     let muted = false;
 
@@ -437,6 +494,38 @@
       setMute(!muted);
       localStorage.setItem('muted', muted);
     });
+
+    bgMusicToggle.addEventListener('click', () => {
+      if (!bgMusic) return;
+      if (bgMusic.paused) {
+        bgMusic.play().catch(() => {});
+        bgMusicToggle.textContent = '⏸️ Musica';
+      } else {
+        bgMusic.pause();
+        bgMusicToggle.textContent = '▶️ Musica';
+      }
+    });
+
+    document.getElementById('article-search').addEventListener('input', (event) => {
+      const query = event.target.value.trim().toLowerCase();
+      const allArticles = [...document.querySelectorAll('.grid article, .text-articles article')];
+      allArticles.forEach((card) => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(query) ? '' : 'none';
+      });
+    });
+
+    function showOnboarding() {
+      const toast = document.createElement('div');
+      toast.className = 'onboarding-toast';
+      toast.innerHTML = 'Per suoni completi attiva il microfono audio sul dispositivo e premi qui: <button id="dismiss-toast">Ok</button>';
+      document.body.appendChild(toast);
+
+      setTimeout(() => toast.remove(), 7000);
+      toast.querySelector('#dismiss-toast').addEventListener('click', () => toast.remove());
+    }
+
+    setTimeout(showOnboarding, 900);
 
     themeToggle.addEventListener('click', () => {
       const current = document.documentElement.classList.contains('dark-mode') ? 'dark' : 'light';
