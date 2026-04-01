@@ -170,5 +170,30 @@
   <footer>
     &copy; 2026 Basket News Italia - Ultimo aggiornamento: oggi
   </footer>
+
+  <!-- Suoni per apertura e tap -->
+  <audio id="sound-open" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" preload="auto"></audio>
+  <audio id="sound-tap" src="https://www.soundjay.com/button/sounds/button-16.mp3" preload="auto"></audio>
+
+  <script>
+    const openSound = document.getElementById('sound-open');
+    const tapSound = document.getElementById('sound-tap');
+
+    function tryPlay(audioEl) {
+      if (!audioEl) return;
+      const playPromise = audioEl.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay bloccato finché non c'è interazione; ignora.
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      tryPlay(openSound);
+      document.body.addEventListener('click', () => tryPlay(tapSound));
+      document.body.addEventListener('touchstart', () => tryPlay(tapSound));
+    });
+  </script>
 </body>
 </html>
